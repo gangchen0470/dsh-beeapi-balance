@@ -38,7 +38,7 @@ window.__ModuleLoader__.load({
               const state=await response.json();
               if(typeof state?.connected!=='boolean')return;
               publishBalance(state);
-              if(state.connected&&(!recheckAge||!Number.isFinite(Date.parse(state.updatedAt))||Date.now()-Date.parse(state.updatedAt)>=600000||Date.now()<Date.parse(state.updatedAt))){
+              if(state.connected&&(!recheckAge||typeof state.updatedAt!=='number'||!Number.isFinite(state.updatedAt)||state.updatedAt>Date.now()||Date.now()-state.updatedAt>=600000)){
                 const refreshed=await fetch('/api/local-beeapi/refresh',{...options,method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
                 if(refreshed.ok){const result=await refreshed.json();if(typeof result?.connected==='boolean')publishBalance(result);}
               }

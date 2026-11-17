@@ -1,6 +1,6 @@
 {
   "name": "@local/beeapi-dashboard",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "private": true,
   "type": "module",
   "description": "Query BeeAPI account balance in a native DSH panel.",

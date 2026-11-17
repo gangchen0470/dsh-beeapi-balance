@@ -131,7 +131,7 @@ test('open main panel receives balance updates from compact state polling', asyn
 
 test('visibility recovery skips recent upstream refresh and refreshes stale balance', async () => {
   const listeners = new Map(), requests = [];
-  let bundle, cleanup, updatedAt = new Date(Date.now()).toISOString();
+  let bundle, cleanup, updatedAt = Date.now();
   const React = {
     createElement: (type, props, ...children) => ({ type, props: props || {}, children }),
     useSyncExternalStore() {},
@@ -161,7 +161,17 @@ test('visibility recovery skips recent upstream refresh and refreshes stale bala
   await new Promise(resolve => setImmediate(resolve));
   assert.deepEqual(requests, ['/api/local-beeapi/state']);
   requests.length = 0;
-  updatedAt = new Date(Date.now() - 600001).toISOString();
+  updatedAt = Date.now() - 600001;
+  listeners.get('visibilitychange')();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.deepEqual(requests, ['/api/local-beeapi/state', '/api/local-beeapi/refresh']);
+  requests.length = 0;
+  updatedAt = undefined;
+  listeners.get('visibilitychange')();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.deepEqual(requests, ['/api/local-beeapi/state', '/api/local-beeapi/refresh']);
+  requests.length = 0;
+  updatedAt = Date.now() + 60000;
   listeners.get('visibilitychange')();
   await new Promise(resolve => setImmediate(resolve));
   assert.deepEqual(requests, ['/api/local-beeapi/state', '/api/local-beeapi/refresh']);
