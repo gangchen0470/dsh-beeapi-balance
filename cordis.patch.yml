@@ -1,0 +1,4 @@
+- insert:
+    - id: local-beeapi-dashboard
+      name: '@local/beeapi-dashboard'
+      config: {}
