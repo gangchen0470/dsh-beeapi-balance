@@ -24,3 +24,7 @@ Run `node --test *.test.js` from the repository root with a compatible Node.js r
 ## Disclaimer
 
 This is an independent, unofficial plugin and is not affiliated with BeeAPI or the DeepSeek Harness maintainers.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
