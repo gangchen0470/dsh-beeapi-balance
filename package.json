@@ -1,9 +1,22 @@
 {
-  "name": "@local/beeapi-dashboard",
-  "version": "1.2.9",
-  "private": true,
+  "name": "dsh-beeapi-balance",
+  "version": "1.2.10",
+  "description": "BeeAPI account balance indicator and settings panel for DeepSeek Harness.",
+  "license": "MIT",
   "type": "module",
-  "description": "Query BeeAPI account balance in a native DSH panel.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gangchen0470/dsh-beeapi-balance.git"
+  },
+  "homepage": "https://github.com/gangchen0470/dsh-beeapi-balance#readme",
+  "bugs": { "url": "https://github.com/gangchen0470/dsh-beeapi-balance/issues" },
+  "keywords": ["deepseek-harness", "dsh", "dsh-plugin", "beeapi", "balance"],
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
+  "engines": { "node": ">=22", "dsh": ">=0.2.2-rc.3" },
+  "scripts": {
+    "test": "node --test channels.test.js client.test.js oauth.test.js rate.test.js packaging.test.js",
+    "prepack": "node --test channels.test.js client.test.js oauth.test.js rate.test.js packaging.test.js"
+  },
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",
@@ -11,26 +24,15 @@
     "./icon": "./icon.svg"
   },
   "files": [
-    "index.js",
-    "oauth.js",
-    "client.js",
-    "cordis.patch.yml",
-    "locale/*.json",
-    "icon.svg",
-    "channels.js",
-    "rate.js"
+    "index.js", "oauth.js", "client.js", "cordis.patch.yml",
+    "locale/*.json", "icon.svg", "channels.js", "rate.js"
   ],
   "dsh": {
-    "bundle": {
-      "patch": "./cordis.patch.yml"
-    },
-    "client": {
-      "platform": "web",
-      "immediately": true,
-      "inject": []
-    }
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": { "platform": "web", "immediately": true, "inject": [] }
   },
   "dependencies": {
+    "@deepseek-ai/cosmokit": "^1.9.0",
     "@deepseek-ai/schemastery": "3.19.0"
   }
 }

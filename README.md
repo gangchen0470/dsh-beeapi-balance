@@ -11,17 +11,33 @@ Unofficial [DeepSeek Harness](https://github.com/deepseek-ai) plugin for checkin
 
 The CNY amount is an **estimate at a fixed rate**, not a live exchange rate or a prediction of actual top-up prices. The plugin does not provide request history or today's spending. BeeAPI's website account endpoints have not been established as accessible with the model API key.
 
-## Install from source
+## Install and update
 
-This is a local DSH bundle, not an npm-published package. Clone this repository into an ordinary workspace directory, review `package.json` and `cordis.patch.yml`, then install that directory's **absolute path** with DSH's plugin manager (`install_bundle`). Do not edit the DSH profile's manifest or patch by hand, or run a package manager inside the profile. If the local bundle cannot resolve `@deepseek-ai/schemastery`, install dependencies **in the clone** with `pnpm install --ignore-scripts`; do not run unreviewed install scripts.
+The npm distribution is named **`dsh-beeapi-balance`**. It requires DSH `0.2.2-rc.3` or later (currently verified baseline: `0.2.2-rc.3`); future DSH releases still need compatibility testing. Node.js 22 or later is required for development.
 
-On a first install, do not remove any bundle. For an update, check whether `@local/beeapi-dashboard` is already installed, then replace it through the plugin manager as appropriate. Check the install result's `application` and `warnings`; `application: applied` and live registration of the BeeAPI settings page and balance indicator are stronger evidence than a linked package version alone. If installation or activation fails, report the error rather than editing other plugins or bypassing DSH version requirements. Browser UI appearance still needs a separate visual check when browser control is available.
+After the maintainer publishes the package to npm, install `dsh-beeapi-balance` through DSH's built-in plugin manager. To update, install `dsh-beeapi-balance@latest` through that same manager. This does not promise automatic update checks. Before the first npm publication, use the local-source method below.
+
+### Migrate from the old local bundle
+
+The old package name is `@local/beeapi-dashboard`. Do not enable both packages at once: they share routes and UI registrations. Disable the old bundle through DSH's plugin manager, then install and enable `dsh-beeapi-balance`. Verify the new plugin before optionally removing the old bundle. If migration fails, disable the new bundle and re-enable the old one. Do not edit the DSH profile by hand.
+
+The internal entry/panel IDs, API routes and credential keys are deliberately retained. Existing credential references should remain usable in the same DSH profile, but migration and saved exchange-rate behavior require live verification. Reconnect from the plugin settings if necessary; do not copy secrets into source files.
+
+### Install from source
+
+Clone this repository into an ordinary workspace directory. Review `package.json` and `cordis.patch.yml`, run `pnpm install --ignore-scripts` **in the clone**, then install its **absolute path** through DSH's plugin manager (`install_bundle`). Do not run a package manager inside the DSH profile. Local source installs do not fetch GitHub updates automatically.
+
+Check the install result's `application` and `warnings`; `application: applied` and live registration of the BeeAPI settings page and balance indicator are stronger evidence than an installed version alone. If activation fails, report the diagnostic rather than bypassing DSH version requirements. Browser appearance and an authenticated balance query need separate live checks.
 
 Configure the connection yourself on **Plugins → BeeAPI balance**: select a supported DSH BeeAPI chat/image channel or enter a manual key. Only `https://beeapi.dev` channels are accepted. A manual key is stored by DSH's credential service; channel mode stores a channel reference instead of copying its key. Never paste an API key into an agent prompt, commit it, print it in logs, or put it in environment or credential files in this repository. The local Host sends the key only to BeeAPI for the read-only balance query.
 
-## Development
+## Development and publishing
 
-Run `node --test *.test.js` from the repository root with a compatible Node.js runtime. Tests use synthetic keys and mocked network responses; they do not contact BeeAPI. Browser end-to-end verification is separate from these tests.
+Install dependencies with `pnpm install --ignore-scripts`, then run `pnpm test`. Tests use synthetic keys and mocked network responses; they do not contact BeeAPI. Browser end-to-end verification is separate. In restricted environments that prohibit child processes, Node.js 22 or later can run the tests using `node --test --test-isolation=none channels.test.js client.test.js oauth.test.js rate.test.js packaging.test.js`.
+
+This release includes `@deepseek-ai/cosmokit` explicitly to prevent the missing-runtime-dependency error seen in the previous local installation. Published files use a whitelist; tests, lockfiles, node_modules and credential files are not included. There are no install lifecycle scripts. `prepack` runs the test suite before creating a release archive.
+
+See [PUBLISHING.md](PUBLISHING.md) for the maintainer release checklist. Preparing this source does not itself publish anything to npm.
 
 ## Disclaimer
 

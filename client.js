@@ -1,5 +1,5 @@
 window.__ModuleLoader__.load({
-  id: '@local/beeapi-dashboard',
+  id: 'dsh-beeapi-balance',
   factory(require) {
     const React = require('react');
     const h = React.createElement;
@@ -10,8 +10,8 @@ window.__ModuleLoader__.load({
     };
     function Icon({size=20}) {return h('svg',{width:size,height:size,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.7,'aria-hidden':true},h('rect',{x:3,y:4,width:18,height:16,rx:2}),h('path',{d:'M3 9h18M7 16v-3m5 3v-4m5 4v-2'}));}
     return {inject:['slots','locale','layout'],apply(ctx) {
-      for (const [locale,dict] of Object.entries(dictionaries)) ctx.effect(()=>ctx.locale.register('@local/beeapi-dashboard',locale,dict));
-      const t=ctx.locale.bind('@local/beeapi-dashboard');
+      for (const [locale,dict] of Object.entries(dictionaries)) ctx.effect(()=>ctx.locale.register('dsh-beeapi-balance',locale,dict));
+      const t=ctx.locale.bind('dsh-beeapi-balance');
       const balanceListeners = new Set();
       const publishBalance = value => { for (const listener of balanceListeners) listener(value); };
       function CompactBalance() {
@@ -107,7 +107,7 @@ window.__ModuleLoader__.load({
       }
       ctx.slots.inject('conversation.composer.dock',()=>ctx.slots.register({name:'conversation.composer.dock',id:'beeapi-balance',order:2},CompactBalance));
       function PluginSettings({view}) {return view==='summary'?h('span',null,t('settingsTitle')):h(Panel,{settingsPage:true});}
-      ctx.slots.inject('plugins.bundle.config',()=>ctx.slots.register({name:'plugins.bundle.config',key:'@local/beeapi-dashboard'},PluginSettings));
+      ctx.slots.inject('plugins.bundle.config',()=>ctx.slots.register({name:'plugins.bundle.config',key:'dsh-beeapi-balance'},PluginSettings));
       ctx.slots.inject('main',()=>ctx.slots.register({name:'main',key:panelId},Panel));
     }};
   }

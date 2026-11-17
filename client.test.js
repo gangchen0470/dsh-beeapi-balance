@@ -29,7 +29,7 @@ test('compact balance schedules low-frequency polls and cleans them up', () => {
     fetch() { throw new Error('hidden component must not issue a request'); }
   });
   vm.runInContext(source, context, { filename: 'client.js' });
-  assert.equal(bundle.id, '@local/beeapi-dashboard');
+  assert.equal(bundle.id, 'dsh-beeapi-balance');
   const plugin = bundle.factory(name => {
     assert.equal(name, 'react');
     return React;
