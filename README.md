@@ -13,9 +13,11 @@ The CNY amount is an **estimate at a fixed rate**, not a live exchange rate or a
 
 ## Install from source
 
-This is a local DSH bundle rather than an npm-published package. Clone it and use DSH's plugin manager to install the local directory. The bundle manifest is `package.json` and the Loader patch is `cordis.patch.yml`. Install dependencies with `pnpm install --ignore-scripts` if your local bundle loader does not resolve `@deepseek-ai/schemastery` automatically. Configure the connection on the **Plugins → BeeAPI balance** page.
+This is a local DSH bundle, not an npm-published package. Clone this repository into an ordinary workspace directory, review `package.json` and `cordis.patch.yml`, then install that directory's **absolute path** with DSH's plugin manager (`install_bundle`). Do not edit the DSH profile's manifest or patch by hand, or run a package manager inside the profile. If the local bundle cannot resolve `@deepseek-ai/schemastery`, install dependencies **in the clone** with `pnpm install --ignore-scripts`; do not run unreviewed install scripts.
 
-Only `https://beeapi.dev` channels are accepted. A manual key is stored by DSH's credential service; channel mode stores a channel reference instead of copying its key. Do not commit real keys, environment files, or local credential documents. The extension sends the key only from the local Host to BeeAPI for the balance query.
+On a first install, do not remove any bundle. For an update, check whether `@local/beeapi-dashboard` is already installed, then replace it through the plugin manager as appropriate. Check the install result's `application` and `warnings`; `application: applied` and live registration of the BeeAPI settings page and balance indicator are stronger evidence than a linked package version alone. If installation or activation fails, report the error rather than editing other plugins or bypassing DSH version requirements. Browser UI appearance still needs a separate visual check when browser control is available.
+
+Configure the connection yourself on **Plugins → BeeAPI balance**: select a supported DSH BeeAPI chat/image channel or enter a manual key. Only `https://beeapi.dev` channels are accepted. A manual key is stored by DSH's credential service; channel mode stores a channel reference instead of copying its key. Never paste an API key into an agent prompt, commit it, print it in logs, or put it in environment or credential files in this repository. The local Host sends the key only to BeeAPI for the read-only balance query.
 
 ## Development
 
